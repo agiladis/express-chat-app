@@ -10,9 +10,14 @@ const PORT = process.env.PORT || 3000;
 io.on('connection', (socket) => {
   console.log('a user connected');
 
+  socket.on('join room', (room) => {
+    socket.join(room);
+    console.log(`user joined room: ${room}`);
+  });
+
   socket.on('chat', (msg) => {
     console.log('outgoing message: ' + msg);
-    io.emit('chat', msg);
+    io.to(room).emit('chat', msg);
   });
 
   socket.on('disconnect', () => {
